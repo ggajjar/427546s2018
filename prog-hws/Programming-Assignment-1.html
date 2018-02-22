@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<h2><center>Computer Graphics Programming Assignment 1 (Gargi Gajjar - 01745061)</center></h2>
+		<h4><center>Every shape with Rubberbanding(Click Move and Click)</center></h4>
+	<style>
+		.button
+		{
+			background-color: #2bab85;
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			width: 120px;
+		}
+		.button:active 
+		{
+			background-color: #9c9b9c;
+			transform: translateY(4px);
+		}
+		
+		.button:hover {opacity: 0.6;}
+		
+		.button1 {background-color: #000000;}
+		.button2 {background-color: #ec1c24;} 
+		.button3 {background-color: #1106e7;}  
+		.button4 {background-color: #5ccf36;} 
+		.button5 {background-color: #8336cf;} 
+		.button6 {background-color: #fd92c4;} 
+		.button7 {background-color: #fafa00;} 
+		.button8 {background-color: #f5258a;}
+		.button9 {background-color: #ff7f27;}
+	</style>
+	
+	</head>
+
+	<body>
+		<div>
+		<canvas id="myCanvas" width="1070" height="400" style="border:3px solid #d3d3d3;" onclick = getPoint(event) onmousemove = drawShape(event)>
+		</canvas></div>
+	
+		<div>
+		Shape:	
+		<button class = "button" onclick = "drawLines()">Line</button>
+		<button class = "button" onclick = "drawRect()">Rectangle</button>
+		<button class = "button" onclick = "drawTriangle()">Triangle</button>
+		<button class = "button" onclick = "drawEllipse()">Ellipse</button>
+		<button class = "button" onclick = "drawOval()">Oval</button>
+		<button class = "button" onclick = "drawPolyLines()">PolyLine</button>
+		<button class = "button" onclick = "drawHex()">Hexagon</button>
+		<button class = "button" onclick = "clearScreen()">Clear</button>
+		</div>
+		
+		<div>
+		Width:
+		<button class="button button8" onclick = "setWid1()">Width 1</button>
+		<button class="button button8" onclick = "setWid2()">Width 2</button>
+		<button class="button button8" onclick = "setWid3()">Width 3</button>
+		<button class="button button8" onclick = "setWid4()">Width 4</button>
+		<button class="button button8" onclick = "setWid5()">Width 5</button>
+		<button class="button button8" onclick = "setWid6()">Width 6</button>
+		<button class="button button8" onclick = "setWid7()">Width 7</button>
+		<button class="button button8" onclick = "setWid8()">Width 8</button>
+		</div>
+		
+		<div>
+		Color :
+		<button class="button button1" onclick = "setCol1()">Black</button>
+		<button class="button button2" onclick = "setCol2()">Red</button>
+		<button class="button button3" onclick = "setCol3()">Blue</button>
+		<button class="button button4" onclick = "setCol4()">Green</button>
+		<button class="button button5" onclick = "setCol5()">Purple</button>
+		<button class="button button6" onclick = "setCol6()">Pink</button>
+		<button class="button button7" onclick = "setCol7()">Yellow</button>		
+		<button class="button button9" onclick = "setCol8()">Orange</button>		
+		</div>
+		
+		<script>
+			var shape = 0 , pixsize = 1;
+			var can = document.getElementById("myCanvas");
+			var c = can.getContext("2d");
+			var flag = 0 , buttonflag = 0 , startflag = 0 , polylineflag = 0;
+			var red = 0 , green = 0 , blue = 0;
+			
+			var offsetX = can.offsetLeft;
+			var offsetY = can.offsetTop;
+			
+			var startPointX , startPointY , lastPointX , lastPointY , finalPointX , finalPointY;
+			
+			var polyX = [];
+			var polyY = [];
+			
+			function setDefault()
+			{
+				buttonflag = 1;
+				
+				if(startflag == 1)
+					startflag = 0;
+				else startflag = 1;
+			}
+			
+			function drawLines()
+			{
+				shape = 1;
+				setDefault();
+			}
+			
+			function drawRect()
+			{
+				shape = 2;
+				setDefault();
+			}
+			
+			function drawEllipse()
+			{
+				shape = 3;
+				setDefault();
+			}
+			
+			function drawTriangle()
+			{
+				shape = 4;
+				setDefault();
+			}
+			
+			function drawOval()
+			{
+				shape = 5;
+				setDefault();
+			}
+			
+			function drawPolyLines()
+			{
+				shape = 6;
+				polylineflag = 1;
+				setDefault();
+			}
+			
+			function drawHex()
+			{
+				shape = 7;
+				setDefault();
+			}
+			
+			function getPoint(event)
+			{
+				if(buttonflag == 0)
+					return;
+				
+				if(startflag == 0)
+					startflag = 1;
+				
+				if(flag == 1)
+				{
+					finalPointX = event.clientX - offsetX;
+					finalPointY = event.clientY - offsetY;
+					
+					if(shape == 6 && polylineflag == 1)
+					{
+						drawPolyLine();
+					}
+					if(shape == 6 && polylineflag == 0)
+					{
+						polylineflag = 1;
+					}
+					
+					else
+					{
+						flag = 0;
+					}
+				}
+			
+				else
+				{
+					startPointX = event.clientX - offsetX;
+					startPointY = event.clientY - offsetY;
+					flag = 1;
+				}
+			}
+			
+			function drawLine(startx , starty , finalx , finaly)
+			{
+				drawPixel(startx , starty);
+
+				var dx = finalx - startx;
+				var dy = finaly - starty;
+				
+				var length = Math.sqrt((dx * dx) + (dy * dy));
+				
+				var cos = dx/length;
+				var sin = dy/length;
+				
+				var i;
+				for(i = 0 ; i < length ; i++)
+				{
+					nextX = Math.floor(startx + (i * cos));
+					nextY = Math.floor(starty + (i * sin));
+					
+					drawPixel(nextX , nextY);
+				}
+			}
+			
+			function drawRectangle(startx , starty , finalx , finaly)
+			{
+				var dx = finalx - startx;
+				var dy = finaly - starty;
+				
+				drawLine(startx , starty , startx + dx , starty);
+				drawLine(startx , starty , startx , starty + dy);
+				drawLine(startx , starty + dy , finalx , finaly);
+				drawLine(startx + dx , starty , finalx , finaly);
+			}
+			
+			function drawEllipses(startx , starty , finalx , finaly)
+			{
+				var dx = finalx - startx;
+				var dy = finaly - starty;
+				
+				var centerx = startx + (dx/2);
+				var centery = starty + (dy/2);
+				
+				var i;
+				
+				for(i = 0 ; i < 361 ; )
+				{
+					var x = centerx + (dx/2) * Math.cos(i * Math.PI / 180);
+					var y = centery + (dy/2) * Math.sin(i * Math.PI / 180);
+					
+					i += 0.1;
+					drawPixel(x , y);
+				}	
+			}
+			
+			function drawTriangles(startx , starty , finalx , finaly)
+			{
+				var dx = finalx - startx;
+				var dy = finaly - starty;
+				
+				var p1x , p1y , p2x , p2y , p3x , p3y;
+
+				if((dx > 0 && dy < 0) || (dx < 0 && dy < 0))
+				{
+					p1x = startx;
+					p1y = starty;
+					
+					p2x = startx + (dx/2);
+					p2y = starty + dy;
+					
+					p3x = startx + dx;
+					p3y = starty;
+				}
+				
+				else if((dx > 0 && dy > 0) || (dx < 0 && dy > 0))
+				{
+					p1x = finalx;
+					p1y = finaly;
+					
+					p2x = startx + (dx/2);
+					p2y = starty;
+					
+					p3x = startx;
+					p3y = starty + dy;
+				}
+				
+				drawLine(p1x , p1y , p2x , p2y);
+				drawLine(p3x , p3y , p2x , p2y);
+				drawLine(p3x , p3y , p1x , p1y);
+			}
+			
+			function drawOvals(startx , starty , finalx , finaly)
+			{
+				drawEllipses(startx , starty , finalx , finaly);
+			}
+			
+			function drawPolyLine()
+			{
+				polyX.push(startPointX);
+				polyY.push(startPointY);
+				polyX.push(finalPointX);
+				polyY.push(finalPointY);
+				
+				startPointX = finalPointX;
+				startPointY = finalPointY;
+				
+				if(startPointX == finalPointX && startPointY == finalPointY)
+				{
+					polylineflag = 0;
+					return;
+				}
+			}
+			
+			function drawHexagon(startx , starty , finalx , finaly)
+			{
+				var dx = finalx - startx;
+				var dy = finaly - starty;
+				
+				drawLine(startx + (dx/2) , starty + dy , startx + dx , starty + (2 * (dy/3)));
+				drawLine(startx + dx , starty + (2 * (dy/3)) , startx + dx , starty + (dy/3));
+				drawLine(startx + dx , starty + (dy/3) , startx + (dx/2) , starty);
+				drawLine(startx + (dx/2) , starty , startx , starty + (dy/3));
+				drawLine(startx , starty + (dy/3) , startx , starty + (2 * (dy/3)));
+				drawLine(startx , starty + (2 * (dy/3)) , startx + (dx/2) , starty + dy);
+			}
+			
+			function drawPixel(x , y)
+			{
+				c.fillRect(x , y , pixsize , pixsize);
+			}
+			
+			function drawShape(event)
+			{
+				if(shape == 0 || startflag == 0 || flag == 0)
+				{
+					return;
+				}
+				else
+				{
+					if(shape == 6)
+					{
+						clearScreen();
+						
+						var i;
+				
+						for(i = 1 ; i < polyX.length ; i++)
+						{
+							drawLine(polyX[i-1] , polyY[i-1] , polyX[i] , polyY[i]);
+						}
+						
+						lastPointX = event.clientX - offsetX;
+						lastPointY = event.clientY - offsetY;
+						
+						drawLine(startPointX , startPointY , lastPointX , lastPointY);
+					}
+				
+					lastPointX = event.clientX - offsetX;
+					lastPointY = event.clientY - offsetY;
+					
+					if(shape == 1)
+					{
+						clearScreen();
+						drawLine(startPointX , startPointY , lastPointX , lastPointY);
+					}
+					
+					else if(shape == 2)
+					{
+						clearScreen();
+						drawRectangle(startPointX , startPointY , lastPointX , lastPointY);
+					}
+					
+					else if(shape == 3)
+					{
+						clearScreen();
+						drawEllipses(startPointX , startPointY , lastPointX , lastPointY);
+					}
+					
+					else if(shape == 4)
+					{
+						clearScreen();
+						drawTriangles(startPointX , startPointY , lastPointX , lastPointY);
+					}
+					
+					else if(shape == 5)
+					{
+						clearScreen();
+						drawOvals(startPointX , startPointY , lastPointX , lastPointY);
+					}
+					
+					else if(shape == 7)
+					{
+						clearScreen();
+						drawHexagon(startPointX , startPointY , lastPointX , lastPointY);
+					}
+				}
+			}
+			
+			function setWid1()
+			{
+				pixsize = 1;
+			}
+			function setWid2()
+			{
+				pixsize = 2;
+			}
+			function setWid3()
+			{
+				pixsize = 3;
+			}
+			function setWid4()
+			{
+				pixsize = 4;
+			}
+			function setWid5()
+			{
+				pixsize = 5;
+			}
+			function setWid6()
+			{
+				pixsize = 6;
+			}
+			function setWid7()
+			{
+				pixsize = 7;
+			}
+			function setWid8()
+			{
+				pixsize = 8;
+			}
+			
+			function setCol1()
+			{
+				c.fillStyle = "#000000";
+			}
+			function setCol2()
+			{
+				c.fillStyle = "#ec1c24";
+			}			
+			function setCol3()
+			{
+				c.fillStyle = "#1106e7";
+			}			
+			function setCol4()
+			{
+				c.fillStyle = "#5ccf36";
+			}
+			function setCol5()
+			{
+				c.fillStyle = "#8336cf";
+			}
+			function setCol6()
+			{
+				c.fillStyle = "#fd92c4";
+			}
+			function setCol7()
+			{
+				c.fillStyle = "#fafa00";
+			}
+			function setCol8()
+			{
+				c.fillStyle = "#ff7f27";
+			}
+			
+			function clearScreen()
+			{
+				c.clearRect(0 , 0 , can.width , can.height);
+			}
+		</script>
+		
+		<p id = "trial"></p>
+	</body>
+</html>
