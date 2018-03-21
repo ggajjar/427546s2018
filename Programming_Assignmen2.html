@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<h2><center>Computer Graphics Programming Assignment 2 (Gargi Gajjar - 01745061)</center></h2>
+	</head>
+
+	<style>
+		#myTable
+		{
+			border-spacing: 2px;
+		}
+		
+		.button
+		{
+			background-color: #2bab85;
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 12px;
+			margin: 4px 2px;
+			cursor: pointer;
+			width: 150px;
+		}
+		.button:active 
+		{
+			background-color: #9c9b9c;
+			transform: translateY(4px);
+		}
+		
+		.button:hover {opacity: 0.6;}
+		
+		.button1 {background-color: #000000;width:100px;}
+		.button2 {background-color: #ec1c24;width:100px;} 
+		.button3 {background-color: #1106e7;width:100px;}  
+		.button4 {background-color: #5ccf36;width:100px;} 
+		.button5 {background-color: #8336cf;width:100px;} 
+		.button6 {background-color: #fd92c4;width:100px;} 
+		.button7 {background-color: #fafa00;width:100px;} 
+		.button8 {background-color: #f5258a;width:100px;}
+		.button9 {background-color: #ff7f27;width:100px;}
+	</style>
+	
+	<body>
+		<div><h4>Canvas 1</h4>
+		<canvas id="myCanvas1" width="1000" height="400" style="border:3px solid #d3d3d3;">
+		</canvas></div>
+	
+		<div>
+		Ratio<input type = "text" value = "1" disabled>:<input type = "text" id = "ratio" placeholder = "e.g.,2-4">
+		<button class = "button" onclick = "nextIteration()">Next Iteration</button>
+		</div>
+	
+		<div>
+		<table id = "myTable" >
+		<tr>
+		<td>Point1 X:</td><td><input type = "text" id = "point1xline" placeholder = "e.g.,100-700" size = "10"></td>
+		<td>Point1 Y:</td><td><input type = "text" id = "point1yline" placeholder = "e.g.,100-300" size = "10"></td>
+		<td>Point2 X:</td><td><input type = "text" id = "point2xline" placeholder = "e.g.,100-700" size = "10"></td>
+		<td>Point2 Y:</td><td><input type = "text" id = "point2yline" placeholder = "e.g.,100-300" size = "10"></td>
+		<td><button class = "button" onclick = "lineValue()">Draw Line</button></td>
+		</tr>
+		
+		<tr>
+		<td>Point1 X:</td><td><input type = "text" id = "point1xarc" placeholder = "e.g.,200-700" size = "10"></td>
+		<td>Point1 Y:</td><td><input type = "text" id = "point1yarc" placeholder = "e.g.,200-400" size = "10"></td>
+		<td>Point2 X:</td><td><input type = "text" id = "point2xarc" placeholder = "e.g.,100-700" size = "10"></td>
+		<td>Point2 Y:</td><td><input type = "text" id = "point2yarc" placeholder = "e.g.,100-300" size = "10"></td>
+		<td><button class = "button" onclick = "arcValue()">Draw Arc</button></td>
+		</tr>
+		
+		<tr>
+		<td>Point X:</td><td><input type = "text" id = "pointxrect" placeholder = "e.g.,100-300" size = "10"></td>
+		<td>Point Y:</td><td><input type = "text" id = "pointyrect" placeholder = "e.g.,50-200" size = "10"></td>
+		<td>Width:</td><td><input type = "text" id = "widthrect" placeholder = "e.g.,100-500" size = "10"></td>
+		<td>Height:</td><td><input type = "text" id = "heightrect" placeholder = "e.g.,100-300" size = "10"></td>
+		<td><button class = "button" onclick = "rectValue()">Draw Rect</button></td>
+		</tr>
+		
+		<tr>
+		<td>Point1 X:</td><td><input type = "text" id = "pointxpoly" placeholder = "e.g.,100-700" size = "10"></td>
+		<td>Point1 Y:</td><td><input type = "text" id = "pointypoly" placeholder = "e.g.,100-300" size = "10"></td>
+		<td>Size:</td><td><input type = "text" id = "sizepoly" placeholder = "e.g.,100-300" size = "10"></td>
+		<td>No of Sides:</td><td><input type = "text" id = "sidespoly" placeholder = "e.g.,3-20" size = "10"></td>
+		<td><button class = "button" onclick = "polyValue()">Draw Polygon</button></td>
+		</tr>
+		
+		<tr>
+		<td><button class="button button1" onclick = "setCol1()">Black</button></td>
+		<td><button class="button button2" onclick = "setCol2()">Red</button></td>
+		<td><button class="button button3" onclick = "setCol3()">Blue</button></td>
+		<td><button class="button button4" onclick = "setCol4()">Green</button></td>
+		<td><button class="button button5" onclick = "setCol5()">Purple</button></td>
+		<td><button class="button button6" onclick = "setCol6()">Pink</button></td>	
+		<td><button class="button button7" onclick = "setCol7()">Yellow</button></td>		
+		<td><button class="button button9" onclick = "setCol8()">Orange</button></td>	
+		<td><button class="button" onclick = "setDefault()">Clear</td>
+		</tr>
+		
+		<tr>
+		<td><button class="button button8" onclick = "setWid1()">Width 1</button></td>
+		<td><button class="button button8" onclick = "setWid2()">Width 2</button></td>
+		<td><button class="button button8" onclick = "setWid3()">Width 3</button></td>
+		<td><button class="button button8" onclick = "setWid4()">Width 4</button></td>
+		<td><button class="button button8" onclick = "setWid5()">Width 5</button></td>
+		<td><button class="button button8" onclick = "setWid6()">Width 6</button></td>
+		<td><button class="button button8" onclick = "setWid7()">Width 7</button></td>
+		<td><button class="button button8" onclick = "setWid8()">Width 8</button></td>
+		</tr>
+		
+		</table>
+		</div>
+		
+		<br><br>
+		
+		<div><h4>Canvas 2</h4>
+		<canvas id="myCanvas2" width="1000" height="400" style="border:3px solid #d3d3d3;" >
+		</canvas></div>
+		
+		<div>
+		Radius:
+		<input type = "text" id = "wheelRadius">
+		
+		Score:
+		<input type = "text" id = "driverScore">
+		<button class = "button" onclick = "getValues()">Submit</button>
+		</div>
+		
+		<div>
+		<table>
+		<tr>
+		<td><button class="button button1" onclick = "setCol11()">Black</button></td>
+		<td><button class="button button2" onclick = "setCol22()">Red</button></td>
+		<td><button class="button button3" onclick = "setCol33()">Blue</button></td>
+		<td><button class="button button4" onclick = "setCol44()">Green</button></td>
+		<td><button class="button button5" onclick = "setCol55()">Purple</button></td>
+		<td><button class="button button6" onclick = "setCol66()">Pink</button></td>	
+		<td><button class="button button7" onclick = "setCol77()">Yellow</button></td>		
+		<td><button class="button button9" onclick = "setCol88()">Orange</button></td>	
+		<td><button class="button" onclick = "setDefault1()">Clear</td>
+		</tr>
+		
+		<tr>
+		<td><button class="button button8" onclick = "setWid11()">Width 1</button></td>
+		<td><button class="button button8" onclick = "setWid22()">Width 2</button></td>
+		<td><button class="button button8" onclick = "setWid33()">Width 3</button></td>
+		<td><button class="button button8" onclick = "setWid44()">Width 4</button></td>
+		<td><button class="button button8" onclick = "setWid55()">Width 5</button></td>
+		<td><button class="button button8" onclick = "setWid66()">Width 6</button></td>
+		<td><button class="button button8" onclick = "setWid77()">Width 7</button></td>
+		<td><button class="button button8" onclick = "setWid88()">Width 8</button></td>
+		<td><button class="button" onclick = "fillWheel()">Fill</td>
+		</tr>
+		</table>
+		</div>
+		
+		<script>
+		
+			var can1 = document.getElementById("myCanvas1");
+			var c1 = can1.getContext("2d");
+		
+			var can2 = document.getElementById("myCanvas2");
+			var c2 = can2.getContext("2d");
+		
+			//for canvas1
+			var pixsize1 = 1;
+			var ratio;
+			
+			var flag = 0;
+			var point1x;
+			var point1y;
+			var point2x;
+			var point2y;
+			var width;
+			var height;
+			var radius;
+			var sides;
+			var arcflag = 0;
+		
+			var linex = [];
+			var liney = [];
+			
+			var arcx = [];
+			var arcy = [];
+			
+			//for canvas2
+			var radius; //= 150;
+			var score;// = 9;
+			
+			var centerx = 500;
+			var centery = 200;
+			
+			pixsize2 = 1;
+			
+			function setDefault()
+			{
+				c1.fillStyle = "#000000";
+				pixsize1 = 1;
+				linex = [];
+				liney = [];
+				arcx = [];
+				arcy = [];
+				flag = 0;
+				c1.clearRect(0 , 0 , can1.width , can1.height);
+				arcflag = 0;
+			}
+			
+			//question1 implementation
+			
+			function lineValue()
+			{
+				point1x = parseInt(document.getElementById("point1xline").value);
+				point1y = parseInt(document.getElementById("point1yline").value);
+				point2x = parseInt(document.getElementById("point2xline").value);
+				point2y = parseInt(document.getElementById("point2yline").value);
+					
+				linex.push(point1x);
+				linex.push(point2x);
+				liney.push(point1y);
+				liney.push(point2y);
+				
+				drawLine1(point1x , point1y , point2x , point2y);
+			}
+			
+			function arcValue()
+			{
+				point1x = parseInt(document.getElementById("point1xarc").value);
+				point1y = parseInt(document.getElementById("point1yarc").value);
+				point2x = parseInt(document.getElementById("point2xarc").value);
+				point2y = parseInt(document.getElementById("point2yarc").value);
+				
+				arcx.push(point1x);
+				arcy.push(point1y);
+				
+				arcx.push(point2x);
+				arcy.push(point2y);
+				
+				drawArcs(point1x , point1y , point2x , point2y);
+				arcflag = 1;
+			}
+			
+			function rectValue()
+			{
+				point1x = parseInt(document.getElementById("pointxrect").value);
+				point1y = parseInt(document.getElementById("pointyrect").value);
+				width = parseInt(document.getElementById("widthrect").value);
+				height = parseInt(document.getElementById("heightrect").value);
+				
+				linex.push(point1x);
+				linex.push(point1x + width);
+				linex.push(point1x + width);
+				linex.push(point1x);
+				
+				liney.push(point1y);
+				liney.push(point1y);
+				liney.push(point1y + height);
+				liney.push(point1y + height);
+				
+				linex.push(point1x);
+				liney.push(point1y);
+				
+				var i;
+				
+				for(i = 1 ; i < linex.length ; i++)
+				{
+					drawLine1(linex[i-1] , liney[i-1] , linex[i] , liney[i]);
+				}
+			}
+			
+			function polyValue()
+			{
+				point1x = parseInt(document.getElementById("pointxpoly").value);
+				point1y = parseInt(document.getElementById("pointypoly").value);
+				width = parseInt(document.getElementById("sizepoly").value);
+				sides = parseInt(document.getElementById("sidespoly").value);
+					
+				drawPoly(point1x , point1y , width , sides);
+			}
+			
+			function drawArcs(x1 , y1 , x2 , y2)
+			{
+				var dx = x2 - x1;
+				var dy = y2 - y1;
+				
+				var length = Math.sqrt((dx * dx) + (dy * dy));
+				
+				var cx = (x1 + x2)/2;
+				var cy = (y1 + y2)/2;
+				
+				var angle = Math.atan2(cy - y1 , cx - x1);
+				
+				for(i = 0 ; i < 180 ; i+=0.5)
+				{
+					var xx = x1 + ((length/2) * Math.cos(angle - (i * Math.PI/180)));
+					var yy = y1 + ((length/2) * Math.sin(angle - (i * Math.PI/180)));
+					
+					c1.fillRect(xx , yy , pixsize1 , pixsize2);
+				}
+			}
+			
+			function drawPoly(x1 , y1 , w , s)
+			{
+				var angle = 360 / s;
+				var i;
+				var a = angle;
+				
+				for(i = 0 ; i < s + 1 ; i++)
+				{
+					var tempx = x1 + (w * Math.cos(angle * Math.PI/180));
+					var tempy = y1 + (w * Math.sin(angle * Math.PI/180));
+	
+					angle += a;
+					
+					linex.push(tempx);
+					liney.push(tempy);
+				}
+				
+				for(i = 1 ; i < linex.length ; i++)
+				{
+					drawLine1(linex[i - 1] , liney[i - 1] , linex[i] , liney[i]);
+				}
+			}
+			
+			function drawLine1(pt1x , pt1y , pt2x , pt2y)
+			{
+				c1.fillRect(pt1x , pt1y , pixsize1 , pixsize1);
+				
+				var dx = pt2x - pt1x;
+				var dy = pt2y - pt1y;
+				
+				var len = Math.sqrt((dx * dx) + (dy * dy));
+				
+				var cos = dx/len;
+				var sin = dy/len;
+				
+				var i;
+				var ptx , pty;
+				
+				for(i = 0 ; i < len ; i++)
+				{
+					ptx = Math.round(pt1x + (i * cos));
+					pty = Math.round(pt1y + (i * sin));
+					
+					c1.fillRect(ptx , pty , pixsize1 , pixsize1);
+				}
+			}
+			
+			function nextIteration()
+			{
+				ratio = parseInt(document.getElementById("ratio").value);
+			
+				c1.clearRect(0 , 0 , can1.width , can1.height);
+				
+				if(arcflag == 1)
+				{}
+				
+				else
+				{
+				var i;
+				
+				for(i = 1 ; i < linex.length ; i++)
+				{
+					var dx = linex[i] - linex[i - 1];
+					var dy = liney[i] - liney[i - 1];
+					
+					var len = Math.sqrt((dx * dx) + (dy * dy));
+				
+					var cos = dx/len;
+					var sin = dy/len;
+					
+					var j , pos = i , f = 0;
+					
+					for(j = 1 ; j < ratio ; j++)
+					{
+						 var tempx = Math.round(linex[i - 1] + ((len * cos)/ratio));
+						 var tempy = Math.round(liney[i - 1] + ((len * sin)/ratio));
+						 
+						 linex.splice(pos , 0 , tempx);
+						 liney.splice(pos , 0 , tempy);
+						 
+						 pos++;
+						 i++;
+					}
+				}
+				
+				if(ratio != 3)
+				{
+					for(i = 1 ; i < linex.length ; i++)
+					{
+						var dx = linex[i] - linex[i - 1];
+						var dy = liney[i] - liney[i - 1];
+						var angle = 0;
+						var pos = i;
+					
+						var length = Math.sqrt((dx * dx) + (dy * dy));
+					
+						if(flag == 0)
+						{
+							angle += Math.atan2(dy , dx) - ((60 * Math.PI)/180);
+							flag = 1;
+						}
+						else
+						{
+							angle += Math.atan2(dy , dx) + ((60 * Math.PI)/180);
+							flag = 0;
+						}
+					
+						var tempx = Math.round(linex[i - 1] + (length * Math.cos(angle)));
+						var tempy = Math.round(liney[i - 1] + (length * Math.sin(angle)));
+					
+						linex.splice(pos , 0 , tempx);
+						liney.splice(pos , 0 , tempy);
+						i++;
+					}
+				}
+				else
+				{
+					for(i = 2 ; i < linex.length ; i+=ratio)
+					{
+						var dx = linex[i] - linex[i - 1];
+						var dy = liney[i] - liney[i - 1];
+						var angle = 0;
+						var pos = i;
+					
+						var length = Math.sqrt((dx * dx) + (dy * dy));
+					
+						angle += Math.atan2(dy , dx) - ((60 * Math.PI)/180);
+						
+						var tempx = Math.round(linex[i - 1] + (length * Math.cos(angle)));
+						var tempy = Math.round(liney[i - 1] + (length * Math.sin(angle)));
+					
+						linex.splice(pos , 0 , tempx);
+						liney.splice(pos , 0 , tempy);
+						i++;
+					}
+				}
+				
+				for(i = 1 ; i < linex.length ; i++)
+				{
+					drawLine1(linex[i - 1] , liney[i - 1] , linex[i] , liney[i]);
+				}
+				}
+			}
+			
+			//question2 implementation
+			function setDefault1()
+			{
+				c2.fillStyle = "#000000";
+				pixsize2 = 1;
+				c2.clearRect(0 , 0 , can2.width , can2.height);
+			}
+			
+			function fillWheel()
+			{
+				var i;
+				
+				for(i = radius - 30 ; i < radius ; i++)
+				{
+					drawWheel1(centerx , centery , i , score);
+				}
+			}
+			
+			function getValues()
+			{
+				c2.clearRect(0 , 0 , can2.width , can2.height);
+			
+				radius = document.getElementById("wheelRadius").value;
+				score = document.getElementById("driverScore").value;
+				
+				drawWheel(centerx , centery , radius , score);
+			}
+			
+			function drawWheel1(x , y , r , s)
+			{
+				if(s == 100)
+				{
+					drawOval(x , y , r , r);
+				}
+				
+				else if(s > 79 && s < 100)
+				{
+					var r2 = r - ((r * (100 - s))/100);
+					
+					drawOval(x , y , r , r2);
+				}
+				
+				else
+				{
+					drawPolygon(x , y , r , s);
+				}
+			}
+			
+			function drawWheel(x , y , r , s)
+			{
+				if(s == 100)
+				{
+					drawOval(x , y , r , r);
+					drawOval(x , y , r - 30 , r - 30);
+				}
+				
+				else if(s > 79 && s < 100)
+				{
+					var r2 = r - ((r * (100 - s))/100);
+					
+					drawOval(x , y , r , r2);
+					drawOval(x , y , r - 30 , r2 - 30);
+				}
+				
+				else
+				{
+					drawPolygon(x , y , r , s);
+					drawPolygon(x , y , r - 30 , s);
+				}
+			}
+			
+			function drawPolygon(x , y , r , s)
+			{
+				//var a = 180 - (((s - 2) * 180)/ s);
+				var a = 360 / score;
+				
+				var i;
+				for(i = 45 ; i < 406 ;)
+				{
+					var x1 = x + r * Math.cos(i * Math.PI / 180);
+					var y1 = y + r * Math.sin(i * Math.PI / 180);
+					
+					i += a;
+					
+					var x2 = x + r * Math.cos(i * Math.PI / 180);
+					var y2 = y + r * Math.sin(i * Math.PI / 180);
+					
+					drawLine(x1 , y1 , x2 , y2);
+					drawLine(x1 , y1 , x2 , y2);
+				}
+				
+				drawInnerPart(x , y);
+			}
+			
+			function drawOval(x , y , r1 , r2 )
+			{
+				var i;
+				
+				for(i = 0 ; i < 361 ; )
+				{
+					var x1 = x + r1 * Math.cos(i * Math.PI / 180);
+					var y1 = y + r2 * Math.sin(i * Math.PI / 180);
+					
+					i += 0.1;
+					c2.fillRect(x1 , y1 , pixsize2 , pixsize2);
+				}
+				drawInnerPart(x , y);
+			}
+			
+			function drawInnerPart(x , y)
+			{
+				var i;
+				
+				for(i = 0 ; i < 361 ; )
+				{
+					var x1 = x + 20 * Math.cos(i * Math.PI / 180);
+					var y1 = y + 20 * Math.sin(i * Math.PI / 180);
+				
+					i += 1;
+					c2.fillRect(x1 , y1 , pixsize2 , pixsize2);
+				}
+				
+				for(i = 0 ; i < 361 ; )
+				{
+					var x1 = x + 35 * Math.cos(i * Math.PI / 180);
+					var y1 = y + 35 * Math.sin(i * Math.PI / 180);
+					
+					i += 72;
+					
+					//c2.fillRect(x1 , y1 , 5 , 5);
+					
+					var j;
+					
+					for(j = 0 ; j < 361 ; j+=5)
+					{
+						var x2 = x1 + 5 * Math.cos(j * Math.PI / 180);
+						var y2 = y1 + 5 * Math.sin(j * Math.PI / 180);
+				
+						c2.fillRect(x2 , y2 , pixsize2 , pixsize2);
+					}
+				}
+			}
+			
+			function drawLine(pt1x , pt1y , pt2x , pt2y)
+			{
+				c2.fillRect(pt1x , pt1y , pixsize2 , pixsize2);
+				
+				var dx = pt2x - pt1x;
+				var dy = pt2y - pt1y;
+				
+				var length = Math.sqrt((dx * dx) + (dy * dy));
+				
+				var cos = dx/length;
+				var sin = dy/length;
+				
+				var i;
+				var ptx , pty;
+				
+				for(i = 0 ; i < length ; i++)
+				{
+					ptx = Math.floor(pt1x + (i * cos));
+					pty = Math.floor(pt1y + (i * sin));
+					
+					c2.fillRect(ptx , pty , pixsize2 , pixsize2);
+				}
+			}
+			
+			function setCol1()
+			{
+				c1.fillStyle = "#000000";
+			}
+			function setCol2()
+			{
+				c1.fillStyle = "#ec1c24";
+			}			
+			function setCol3()
+			{
+				c1.fillStyle = "#1106e7";
+			}			
+			function setCol4()
+			{
+				c1.fillStyle = "#5ccf36";
+			}
+			function setCol5()
+			{
+				c1.fillStyle = "#8336cf";
+			}
+			function setCol6()
+			{
+				c1.fillStyle = "#fd92c4";
+			}
+			function setCol7()
+			{
+				c1.fillStyle = "#fafa00";
+			}
+			function setCol8()
+			{
+				c1.fillStyle = "#ff7f27";
+			}
+			
+			function setWid1()
+			{
+				pixsize1 = 1;
+			}
+			function setWid2()
+			{
+				pixsize1 = 2;
+			}
+			function setWid3()
+			{
+				pixsize1 = 3;
+			}
+			function setWid4()
+			{
+				pixsize1 = 4;
+			}
+			function setWid5()
+			{
+				pixsize1 = 5;
+			}
+			function setWid6()
+			{
+				pixsize1 = 6;
+			}
+			function setWid7()
+			{
+				pixsize1 = 7;
+			}
+			function setWid8()
+			{
+				pixsize1 = 8;
+			}
+			
+			function setCol11()
+			{
+				c2.fillStyle = "#000000";
+			}
+			function setCol22()
+			{
+				c2.fillStyle = "#ec1c24";
+			}			
+			function setCol33()
+			{
+				c2.fillStyle = "#1106e7";
+			}			
+			function setCol44()
+			{
+				c2.fillStyle = "#5ccf36";
+			}
+			function setCol55()
+			{
+				c2.fillStyle = "#8336cf";
+			}
+			function setCol66()
+			{
+				c2.fillStyle = "#fd92c4";
+			}
+			function setCol77()
+			{
+				c2.fillStyle = "#fafa00";
+			}
+			function setCol88()
+			{
+				c2.fillStyle = "#ff7f27";
+			}
+			
+			function setWid11()
+			{
+				pixsize2 = 1;
+			}
+			function setWid22()
+			{
+				pixsize2 = 2;
+			}
+			function setWid33()
+			{
+				pixsize2 = 3;
+			}
+			function setWid44()
+			{
+				pixsize2 = 4;
+			}
+			function setWid55()
+			{
+				pixsize2 = 5;
+			}
+			function setWid66()
+			{
+				pixsize2 = 6;
+			}
+			function setWid77()
+			{
+				pixsize2 = 7;
+			}
+			function setWid88()
+			{
+				pixsize2 = 8;
+			}
+			
+		</script>
+		
+		<p id = "trial"></p>
+	</body>
+</html>
