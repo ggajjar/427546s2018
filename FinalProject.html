@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<h2><center>Computer Graphics Final Project Report 1(Gargi Gajjar - 01745061)</center></h2>
+	</head>
+	
+	<body>
+		<div>
+		Size:
+		<input type = "text" id = "ssize">
+		<button class = "button" onclick = "setSize()">Draw</button>
+		</div>
+	
+		<div>
+		<canvas id="myCanvas" width="2000" height="1000">
+		</canvas></div>
+	
+	<script>
+		var can = document.getElementById("myCanvas");
+		var c = can.getContext("2d");
+	
+		var pixsize = 2;
+
+		var widheight; 
+		
+		var margin = 10;
+		
+		function setSize()
+		{
+			c.clearRect(0 , 0 , can.width , can.height);
+			
+			widheight = parseInt(document.getElementById("ssize").value);
+				
+			frontView(widheight);
+			sideView(widheight);
+			topView(widheight);
+		}
+		
+		function frontView(size)
+		{
+			//for roof
+			drawLine(margin + (size/2) , margin , margin , margin + (size/4));
+			drawLine(margin + (size/2) , margin , margin + size , margin + (size/4));
+			
+			//for walls
+			drawLine(margin + (size/10) , margin + (size/4) - (size/20) , margin + (size/10) , margin + size);
+			drawLine(margin + size - (size/10) , margin + (size/4) - (size/20) , margin + size - (size/10) , margin + size);
+			drawLine(margin + (size/10) , margin + size , margin + size - (size/10) , margin + size);
+			
+			//for door
+			drawRect(margin + (size/2) - (size/10) , margin + (size/2) , (size/5) , (size/2));
+			
+			//left window
+			drawRect(margin + (size/5) , margin + (size/2) , (size/10) , (size/4));
+			drawRect(margin + (size/5) + (size/20) , margin + (size/2) , 0 , size/4);
+			drawRect(margin + (size/5) , margin + (size/2) + (size/8) , (size/10) , 0);
+			
+			//right window
+			drawRect(margin + size - 3*(size/10) , margin + (size/2) , (size/10) , (size/4));
+			drawRect(margin + size - 3*(size/10) + (size/20) , margin + (size/2) , 0 , size/4);
+			drawRect(margin + size - 3*(size/10) , margin + (size/2) + (size/8) , (size/10) , 0);
+		}
+		
+		function sideView(size)
+		{
+			var xmargin = (margin*10) + size;
+		
+			//roof
+			drawRect(xmargin , margin , size , (size/4));
+			
+			//wall
+			drawRect(xmargin + (size/10) , margin + (size/4) , size - (size/5) , 3*(size/4));
+			
+			//left window
+			drawRect(xmargin + (size/5) , (size/2) , (size/10) , (size/4));
+			drawRect(xmargin + (size/5) + (size/20) , size/2 , 0 , size/4);
+			drawRect(xmargin + (size/5) , (size/2) + (size/8) , (size/10) , 0);
+			
+			//right window
+			drawRect(xmargin + size - (size/5) - (size/10) , (size/2) , (size/10) , (size/4));
+			drawRect(xmargin + size - (size/5) - (size/10) + (size/20) , (size/2) , 0 , (size/4));
+			drawRect(xmargin + size - (size/5) - (size/10) , (size/2) + (size/8) , (size/10) , 0);
+			
+			//middle window
+			drawRect(xmargin + (size/2) - (size/20) , (size/2) , (size/10) , (size/4));
+			drawRect(xmargin + (size/2) - (size/20) + (size/20) , (size/2) , 0 , (size/4));
+			drawRect(xmargin + (size/2) - (size/20) , (size/2) + (size/8) , (size/10) , 0);
+		}
+
+		function topView(size)
+		{
+			var ymargin = margin * 10 + size;
+			
+			drawRect(margin , ymargin , size/2 , size);
+			drawRect(margin + (size/2), ymargin , size/2 , size);
+		}
+		
+		function drawLine(pt1x , pt1y , pt2x , pt2y)
+		{
+			c.fillRect(pt1x , pt1y , pixsize , pixsize);
+				
+			var dx = pt2x - pt1x;
+			var dy = pt2y - pt1y;
+				
+			var length = Math.sqrt((dx * dx) + (dy * dy));
+				
+			var cos = dx/length;
+			var sin = dy/length;
+				
+			var i;
+			var ptx , pty;
+				
+			for(i = 0 ; i < length ; i++)
+			{
+				ptx = Math.floor(pt1x + (i * cos));
+				pty = Math.floor(pt1y + (i * sin));
+				
+				c.fillRect(ptx , pty , pixsize , pixsize);
+			}
+		}
+		
+		function drawRect(x , y , w , h)
+		{
+			drawLine(x , y , x + w , y);
+			drawLine(x + w , y , x + w , y + h);
+			drawLine(x + w , y + h , x , y + h);
+			drawLine(x , y + h , x , y);
+		}
+	</script>
+	<p id = "trial"></p>
+	</body>
+</html>
