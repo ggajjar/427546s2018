@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+    
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+			<link rel="stylesheet" href="styles.css" />
+<style>
+
+.header {
+  overflow: hidden;
+  background-color: #0a745f;
+  padding: 20px 10px;
+  float: center;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 20px; 
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;}
+
+/* Style the tab */
+.tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #97bfb7;
+    width: 20%;
+    height: 1000px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: 1px solid #ccc;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.tab button, .dropdown-btn {
+    display: block;
+	padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #000000;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-btn.active {
+    background: #19f0c5;
+}
+
+.dropdown-container {
+    display: none;
+    background-color: #cff7ef;
+    padding-left: 8px;
+}
+
+.dropdown-btn:hover {
+    color: #f1f1f1;
+}
+
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 80%;
+    border-left: none;
+    height: 1000px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+Computer Graphics (Final Project-5)
+<br>Gargi Gajjar(01745061)</br>
+  </div>
+</div>
+
+<div class="tab">
+  <button onclick="setSize()">2D House</button>
+  <button class = "dropdown-btn">3D House</button>
+	<div class = "dropdown-container"><button onclick = "my3DIso()">Isometric</button>
+	<button onclick = "my3DDi()">Dimetric</button>
+	<button onclick = "my3DTri()">Trimetric</button>
+	<button onclick = "my3DRotation();">3D Rotation</button>
+	</div>
+  <button onclick="myLines()">Lines</button>
+  <button onclick="setVisible()">Clear</button>
+</div>
+
+<div class = "tabcontent" style = "display:none" id = "3DRot">
+	<div class="wrapper">
+        <div class="scene">
+            <div class="cube">
+                <div class="cube--side back"><img src = "1.jpg" height="300px" width="300px"></div>
+                <div class="cube--side left"><img src = "2.jpg" height="300px" width="300px"></div>
+                <div class="cube--side right"><img src = "2.jpg" height="300px" width="300px"></div>
+                <div class="cube--side bottomleft"><img src = "5.jpg" height="300px" width="300px"></div>
+                <div class="cube--side bottomright"><img src = "5.jpg" height="300px" width="300px"></div>
+                <div class="cube--side top"><img src = "3.jpg" height="300px" width="300px"></div>
+                <div class="cube--side front"><img src = "4.jpg" height="300px" width="300px"></div>
+            </div>
+    	</div>        
+		</div>
+</div>
+
+<div class = "tabcontent" id = "cann">
+		<canvas id="myCanvas" width="2000" height="1000">
+		</canvas></div>
+
+<script src = "2Dview.js"></script>	
+<script src = "3Dview.js"></script>	
+
+<div class = "tabcontent" id = "lines" style = "display:none"><a href = "lines.html" target = "_blank">Lines</a>
+</div>
+		
+<div class = "tabcontent" id = "cubes" style = "display:none"><a href = "3D-Cube.html" target = "_blank">Cubes</a>
+</div>		
+		
+<script>
+	var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var dropdownContent = this.nextElementSibling;
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+  });
+}
+
+var can = document.getElementById("myCanvas");
+		var c = can.getContext("2d");
+	
+		var pixsize = 2;
+		
+		function setVisible()
+		{
+			c.clearRect(0 , 0 , can.width , can.height);
+			document.getElementById("cann").style.display = 'block';
+			document.getElementById("3DRot").style.display = 'none';
+			document.getElementById("cubes").style.display = 'none';
+			document.getElementById("lines").style.display = 'none';
+		}
+		
+		function setSize()
+		{
+			setVisible();
+		
+			c.clearRect(0 , 0 , can.width , can.height);
+			
+			frontView(10 , 10 , 230);
+			sideView(10 , 10 , 230);
+			topView(10 , 10 , 230);
+		}
+		
+		function my3DIso()
+		{
+			setVisible();
+			isometric(150 , 150 , 300);
+		}
+		
+		function my3DDi()
+		{	
+			setVisible();
+			dimetric(150 , 200 , 300);
+		}
+		
+		function my3DTri()
+		{
+			setVisible();
+			trimetric(150 , 200 , 300);
+		}
+		
+		function my3DRotation()
+		{
+			document.getElementById("cann").style.display = 'none';
+			document.getElementById("cann").style.display = 'none';
+			document.getElementById("cubes").style.display = 'none';
+			document.getElementById("3DRot").style.display = 'block';
+		}
+		
+		function myLines()
+		{	
+			document.getElementById("cann").style.display = 'none';
+			document.getElementById("3DRot").style.display = 'none';
+			document.getElementById("cubes").style.display = 'none';
+			document.getElementById("lines").style.display = 'block';
+		}
+		
+		function myCube()
+		{
+			document.getElementById("cann").style.display = 'none';
+			document.getElementById("3DRot").style.display = 'none';
+			document.getElementById("lines").style.display = 'none';
+			document.getElementById("cubes").style.display = 'block';
+			
+		}
+</script>
+     
+</body>
+</html> 
